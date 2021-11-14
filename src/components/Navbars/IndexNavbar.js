@@ -68,9 +68,8 @@ function IndexNavbar() {
         <div className="navbar-translate">
           <NavbarBrand
             data-placement="bottom"
-            href="/"
-            target="_blank"
-            title="Coded by Creative Tim"
+            href="https://fips.unsa.edu.pe/cienciadelacomputacion/"
+            title="csunsa"
           >
             <img src ={logo} width="50" />
             <img src ={logo2} width="80" />
