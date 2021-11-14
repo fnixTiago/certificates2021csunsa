@@ -1,0 +1,18 @@
+.boton{
+    border: none;
+    background: #8fbb24;
+    font-weight: 700;
+    padding: 0.6rem 1.25rem;
+    transition: all 0.4s ease-in-out;
+    border: none;
+    font-family: 'Montserrat', sans-serif;
+}
+.boton :hover{
+    background: hsl(213, 83%, 29%)
+
+}
+.formulario{
+    font-family: 'Roboto', sans-serif;
+    color: #415b78;
+    width: 20rem;
+}
