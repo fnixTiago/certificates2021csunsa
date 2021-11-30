@@ -3,7 +3,7 @@ import { React, useState, useEffect } from "react";
 import jsPDF from "jspdf";
 import { Vivaldi } from "./Fuente.js";
 import { getCertificado } from "../../actions/certificadoAction";
-import fondo from "./images/asistente.png";
+import fondo from "./images/asistente2.png";
 import { Card, CardBody, CardText, CardTitle, Button } from "reactstrap";
 import {
   Form,
@@ -26,8 +26,22 @@ const Certificates = () => {
     let data = await getCertificado(correo, certificado);
     return data;
   };
+  const limpieza = (str, ini, fin) => {
+    let s = "";
+    for (let i = 0; i < str.length; i++) {
+      if (str[i] == ini) s += fin;
+      else {
+        s += str[i];
+      }
+    }
+    return s;
+  };
   const limpiarEmail = (email) => {
     console.log("limpiarEmail", email);
+    email = limpieza(email,".", "");
+    email = limpieza(email,"-", "");
+    email = limpieza(email,"_", "");
+    console.log("email---", email);
     let str = email.split("@");
     return str[0];
   };
@@ -51,30 +65,32 @@ const Certificates = () => {
       tmp = "organizadores";
     }
     let respuesta = getDatos(limpia, tmp);
-    console.log("ingresandoooo1");
+    // console.log("ingresandoooo1");
     respuesta.then((res) => {
-      console.log("ingresandoooo2");
+      // console.log("ingresandoooo2");
       if (res.length === 0) {
-        console.log("no existe elementos");
+        // console.log("no existe elementos");
         setAceptado(true);
       } else {
         console.log("ingresandoooo3");
         console.log("respuestaaa:  ", res);
         let datos = res.datos;
-        var doc = new jsPDF("l", "pt", [1754.0, 1241.0]);
+        let ancho = 3512.0;
+        let alto = 2484.0;
+        var doc = new jsPDF("l", "pt", [ancho, alto]);
 
         var img_fondo = new Image();
         img_fondo.src = fondo;
-        doc.addImage(img_fondo, "png", 0, 0, 1754, 1241);
+        doc.addImage(img_fondo, "png", 0, 0, ancho, alto);
 
         doc.addFileToVFS("VIVALDII.TTF", Vivaldi);
         doc.addFont("VIVALDII.TTF", "custom", "normal");
-        doc.setFontSize(90);
+        doc.setFontSize(160);
         doc.setFont("custom");
         let nombres = capitalize(datos);
-        // let nombres = capitalize("SILVIA PATRICIA ALESSANDRA GARCÍA ORDINOLA");
+        // let nombres = capitalize("FRANCI SUNI LOPEZ");
         console.log("nombres", nombres);
-        doc.text(1754 / 2 - (33 * nombres.length) / 2, 660, nombres);
+        doc.text(ancho / 2 - (33*2 * nombres.length) / 2, 660*2, nombres);
         // doc.text(440, 660, datos);
         doc.save("Certificate.pdf");
         setAceptado(false);
