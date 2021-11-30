@@ -4,7 +4,14 @@ import jsPDF from "jspdf";
 import { Vivaldi } from "./Fuente.js";
 import { getCertificado } from "../../actions/certificadoAction";
 import fondo from "./images/asistente2.png";
-import { Card, CardBody, CardText, CardTitle, Button } from "reactstrap";
+import {
+  Card,
+  CardBody,
+  CardText,
+  CardTitle,
+  Button,
+  Spinner,
+} from "reactstrap";
 import {
   Form,
   FormGroup,
@@ -21,6 +28,7 @@ const Certificates = () => {
   const [email, setEmail] = useState("");
   const [typecerti, setTypecerti] = useState("Asistente");
   const [aceptado, setAceptado] = useState(false);
+  const [clic, setClic] = useState(false);
 
   const getDatos = async (correo, certificado) => {
     let data = await getCertificado(correo, certificado);
@@ -38,9 +46,9 @@ const Certificates = () => {
   };
   const limpiarEmail = (email) => {
     console.log("limpiarEmail", email);
-    email = limpieza(email,".", "");
-    email = limpieza(email,"-", "");
-    email = limpieza(email,"_", "");
+    email = limpieza(email, ".", "");
+    email = limpieza(email, "-", "");
+    email = limpieza(email, "_", "");
     console.log("email---", email);
     let str = email.split("@");
     return str[0];
@@ -57,6 +65,7 @@ const Certificates = () => {
     return arr.join(" ");
   };
   const generarPDF = (e) => {
+    setClic(true);
     e.preventDefault(); //para desaparecer el texto del input
     let limpia = limpiarEmail(email);
     console.log("limpia", limpia);
@@ -70,6 +79,7 @@ const Certificates = () => {
       // console.log("ingresandoooo2");
       if (res.length === 0) {
         // console.log("no existe elementos");
+        setClic(false);
         setAceptado(true);
       } else {
         console.log("ingresandoooo3");
@@ -90,10 +100,11 @@ const Certificates = () => {
         let nombres = capitalize(datos);
         // let nombres = capitalize("FRANCI SUNI LOPEZ");
         console.log("nombres", nombres);
-        doc.text(ancho / 2 - (33*2 * nombres.length) / 2, 660*2, nombres);
+        doc.text(ancho / 2 - (33 * 2 * nombres.length) / 2, 660 * 2, nombres);
         // doc.text(440, 660, datos);
         doc.save("Certificate.pdf");
         setAceptado(false);
+        setClic(false);
       }
     });
   };
@@ -159,6 +170,12 @@ const Certificates = () => {
               </FormGroup>
               <FormGroup style={{ textAlign: "center" }}>
                 <br />
+                <div style={{ textAlign: "center" }} hidden={!clic}>
+                  <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </Spinner>
+                  <br />
+                </div>
                 <Button type="submit" className="boton">
                   Descargar
                 </Button>
