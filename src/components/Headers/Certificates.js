@@ -164,7 +164,7 @@ const Certificates = () => {
                   invalid={aceptado}
                 />
                 <FormFeedback invalid={aceptado}>
-                  Lo sentimos, no se encontró su certificado.
+                  Lo sentimos, no se encontró su certificado o no cumplió con el mínimo de asistencias.
                 </FormFeedback>
                 <FormText>Ingrese su email con el que se registro.</FormText>
               </FormGroup>
